@@ -4,6 +4,8 @@
  */
 package com.ptithcm.demo_rsa;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author MINHDAT
@@ -35,6 +37,7 @@ public class FrmIntro extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(new ImageIcon(getClass().getResource("/img/logoRSA.png").getPath()).getImage());
         setUndecorated(true);
         setPreferredSize(new java.awt.Dimension(799, 533));
         setResizable(false);
@@ -73,8 +76,9 @@ public class FrmIntro extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(0, 50, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

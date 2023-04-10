@@ -7,6 +7,7 @@ package com.ptithcm.demo_rsa;
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -44,12 +45,14 @@ public class FrmMain extends javax.swing.JFrame {
 
         pnlContainer = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new java.awt.CardLayout());
-
         pnlContainer.setPreferredSize(new java.awt.Dimension(800, 600));
         pnlContainer.setLayout(new java.awt.BorderLayout());
-        getContentPane().add(pnlContainer, "card2");
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Hệ mật mã nâng cao RSA");
+        setIconImage(new ImageIcon(getClass().getResource("/img/logoRSA.png").getPath()).getImage()
+        );
+        getContentPane().setLayout(new java.awt.CardLayout());
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -73,7 +76,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlMenu.getBtnEncryption().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                tabbedPane.addTab(pnlMenu.getBtnEncryption().getName(), new PnlEncryption());
+                tabbedPane.addTab(pnlMenu.getBtnEncryption().getName(), new PnlEncryption(_this));
                 tabbedPane.setTitleAt(tabbedPane.getTabCount()-1, pnlMenu.getBtnEncryption().getName());
                 tabbedPane.setSelectedIndex(tabbedPane.getTabCount()-1);
             }
@@ -82,7 +85,7 @@ public class FrmMain extends javax.swing.JFrame {
          pnlMenu.getBtnDecryption().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                tabbedPane.addTab(pnlMenu.getBtnDecryption().getName(), new PnlDecryption());
+                tabbedPane.addTab(pnlMenu.getBtnDecryption().getName(), new PnlDecryption(_this));
                 tabbedPane.setTitleAt(tabbedPane.getTabCount()-1, pnlMenu.getBtnDecryption().getName());
                 tabbedPane.setSelectedIndex(tabbedPane.getTabCount()-1);
             }
@@ -91,7 +94,7 @@ public class FrmMain extends javax.swing.JFrame {
         pnlMenu.getBtnSign().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                tabbedPane.addTab(pnlMenu.getBtnSign().getName(), new PnlSignature());
+                tabbedPane.addTab(pnlMenu.getBtnSign().getName(), new PnlSignature(_this));
                 tabbedPane.setTitleAt(tabbedPane.getTabCount()-1, pnlMenu.getBtnSign().getName());
                 tabbedPane.setSelectedIndex(tabbedPane.getTabCount()-1);
             }
@@ -100,44 +103,9 @@ public class FrmMain extends javax.swing.JFrame {
         pnlMenu.getBtnSignValidate().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                tabbedPane.addTab(pnlMenu.getBtnSignValidate().getName(), new PnlValidateSign());
+                tabbedPane.addTab(pnlMenu.getBtnSignValidate().getName(), new PnlCheckSignedText(_this));
                 tabbedPane.setTitleAt(tabbedPane.getTabCount()-1, pnlMenu.getBtnSignValidate().getName());
                 tabbedPane.setSelectedIndex(tabbedPane.getTabCount()-1);
-            }
-        });
-    }
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmMain().setVisible(true);
             }
         });
     }

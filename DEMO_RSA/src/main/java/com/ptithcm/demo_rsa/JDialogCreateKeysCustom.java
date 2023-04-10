@@ -13,14 +13,16 @@ import javax.swing.JTextField;
  * @author MINHDAT
  */
 public class JDialogCreateKeysCustom extends javax.swing.JDialog {
+    private FrmMain frmMain;
     private PnlCreateKeys pnlCreateKeys;
 
     /**
      * Creates new form JDialogCreateKeysCustom
      */
-    public JDialogCreateKeysCustom(java.awt.Frame parent, boolean modal, PnlCreateKeys pnlCreateKeys) {
-        super(parent, modal);
+    public JDialogCreateKeysCustom(FrmMain frmMain, boolean modal, PnlCreateKeys pnlCreateKeys) {
+        super(frmMain, modal);
         this.pnlCreateKeys = pnlCreateKeys;
+        this.frmMain = frmMain;
         initComponents();
     }
 
@@ -79,7 +81,7 @@ public class JDialogCreateKeysCustom extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtNumberE, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -87,27 +89,26 @@ public class JDialogCreateKeysCustom extends javax.swing.JDialog {
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtPrimeNumberP, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPrimeNumberP, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtPrimeNumberQ, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPrimeNumberQ, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtNumberE, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNumberE, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addGap(17, 17, 17))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        setEnabled(false);
 //        Xác thực tính đúng đắn của dữ liệu và tạo key
-        if (Validate.createKeysCustom(this)) {
+        if (Validate.createKeysCustom(this, frmMain)) {
             BigInteger p = new BigInteger(txtPrimeNumberP.getText());
             BigInteger q = new BigInteger(txtPrimeNumberQ.getText());
             BigInteger e = new BigInteger(txtNumberE.getText());
@@ -122,8 +123,6 @@ public class JDialogCreateKeysCustom extends javax.swing.JDialog {
 
 //        Đóng JDialog
             dispose();
-        } else {
-            setEnabled(true);
         }
     }//GEN-LAST:event_btnOKActionPerformed
 

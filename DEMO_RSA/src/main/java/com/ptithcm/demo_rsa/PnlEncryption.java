@@ -10,30 +10,30 @@ import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigInteger;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.BadLocationException;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 
 /**
  *
  * @author MINHDAT
  */
 public class PnlEncryption extends javax.swing.JPanel {
-
+    private FrmMain frmMain;
+    
     /**
      * Creates new form PnlCreateKeys
      */
-    public PnlEncryption() {
+    public PnlEncryption(FrmMain frmMain) {
+        this.frmMain = frmMain;
         initComponents();
     }
 
@@ -318,7 +318,26 @@ public class PnlEncryption extends javax.swing.JPanel {
     }//GEN-LAST:event_btnOpenPlainTextActionPerformed
 
     private void btnSavePlainTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePlainTextActionPerformed
-        // TODO add your handling code here:
+//        Tạo trình chọn file
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Txt file", "txt");
+        jFileChooser.setFileFilter(fileNameExtensionFilter);
+        int result = jFileChooser.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String path = jFileChooser.getSelectedFile().getPath();
+            if (!path.endsWith(".txt")) {
+                path += ".txt";
+            }
+            try (FileOutputStream out = new FileOutputStream(path);) {
+                byte[] bytes = txtPlainText.getText().getBytes();
+                out.write(bytes);
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnSavePlainTextActionPerformed
 
     private void btnCopyPlainTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyPlainTextActionPerformed
@@ -328,11 +347,51 @@ public class PnlEncryption extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCopyPlainTextActionPerformed
 
     private void btnOpenEncryptTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenEncryptTextActionPerformed
-        // TODO add your handling code here:
+        //        Tạo trình chọn file
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Txt file", "txt");
+        jFileChooser.setFileFilter(fileNameExtensionFilter);
+        int result = jFileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = jFileChooser.getSelectedFile();
+            switch (FilenameUtils.getExtension(file.getPath())) {
+                case "txt":
+                    try (FileInputStream in = new FileInputStream(file);) {
+                        byte[] bytes = in.readAllBytes();
+                        String txt = new String(bytes, "UTF-8");
+                        txtEncryptText.setText(txt);
+                    } catch (FileNotFoundException ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    break;
+            }
+        }
     }//GEN-LAST:event_btnOpenEncryptTextActionPerformed
 
     private void btnSaveEncryptTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveEncryptTextActionPerformed
-        // TODO add your handling code here:
+//        Tạo trình chọn file
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Txt file", "txt");
+        jFileChooser.setFileFilter(fileNameExtensionFilter);
+        int result = jFileChooser.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String path = jFileChooser.getSelectedFile().getPath();
+            if (!path.endsWith(".txt")) {
+                path += ".txt";
+            }
+            try (FileOutputStream out = new FileOutputStream(path);) {
+                byte[] bytes = txtEncryptText.getText().getBytes();
+                out.write(bytes);
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnSaveEncryptTextActionPerformed
 
     private void btnCopyEncryptTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyEncryptTextActionPerformed
@@ -342,15 +401,33 @@ public class PnlEncryption extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCopyEncryptTextActionPerformed
 
     private void btnEncryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncryptActionPerformed
-        Key publicKey = new Key(new BigInteger(txtPKNumberE.getText()), new BigInteger(txtPKNumberN.getText()));
-        try {
-            txtEncryptText.setText(RSA.getEncrypt(txtPlainText.getText(), publicKey));
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        if (Validate.encrypt(this, frmMain)) {
+            Key publicKey = new Key(new BigInteger(txtPKNumberE.getText()), new BigInteger(txtPKNumberN.getText()));
+            try {
+                txtEncryptText.setText(RSA.getEncrypt(txtPlainText.getText(), publicKey));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btnEncryptActionPerformed
 
+//    Getters and setters
+    public JTextArea getTxtPKNumberE() {
+        return txtPKNumberE;
+    }
 
+    public void setTxtPKNumberE(JTextArea txtPKNumberE) {
+        this.txtPKNumberE = txtPKNumberE;
+    }
+
+    public JTextArea getTxtPKNumberN() {
+        return txtPKNumberN;
+    }
+
+    public void setTxtPKNumberN(JTextArea txtPKNumberN) {
+        this.txtPKNumberN = txtPKNumberN;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCopyEncryptText;
     private javax.swing.JButton btnCopyPlainText;

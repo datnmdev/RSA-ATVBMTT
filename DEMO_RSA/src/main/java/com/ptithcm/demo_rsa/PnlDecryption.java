@@ -4,16 +4,35 @@
  */
 package com.ptithcm.demo_rsa;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigInteger;
+import java.util.Properties;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.commons.io.FilenameUtils;
+
 /**
  *
  * @author MINHDAT
  */
 public class PnlDecryption extends javax.swing.JPanel {
-
+    private FrmMain frmMain;
+    
     /**
      * Creates new form PnlCreateKeys
      */
-    public PnlDecryption() {
+    public PnlDecryption(FrmMain frmMain) {
+        this.frmMain = frmMain;
         initComponents();
     }
 
@@ -30,38 +49,38 @@ public class PnlDecryption extends javax.swing.JPanel {
         jPanel5 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTextPane4 = new javax.swing.JTextPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtPVKNumberD = new javax.swing.JTextArea();
         jPanel13 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextPane3 = new javax.swing.JTextPane();
+        txtPVKNumberN = new javax.swing.JTextArea();
         jPanel8 = new javax.swing.JPanel();
-        jButton7 = new javax.swing.JButton();
+        btnSelectFile = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        txtEncrypt = new javax.swing.JTextArea();
         jPanel4 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
         jPanel7 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
+        btnOpenEncryptText = new javax.swing.JButton();
+        btnSaveEncryptText = new javax.swing.JButton();
+        btnCopyEncryptText = new javax.swing.JButton();
         jPanel11 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         jPanel23 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextPane2 = new javax.swing.JTextPane();
         jPanel24 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnOpenPlainText = new javax.swing.JButton();
+        btnSavePlainText = new javax.swing.JButton();
+        btnCopyPlainText = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtPlain = new javax.swing.JTextArea();
+        btnDecrypt = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout(0, 10));
 
@@ -74,9 +93,13 @@ public class PnlDecryption extends javax.swing.JPanel {
         jLabel1.setText("Số d:");
         jPanel9.add(jLabel1, java.awt.BorderLayout.WEST);
 
-        jScrollPane4.setViewportView(jTextPane4);
+        txtPVKNumberD.setColumns(20);
+        txtPVKNumberD.setLineWrap(true);
+        txtPVKNumberD.setRows(5);
+        txtPVKNumberD.setWrapStyleWord(true);
+        jScrollPane2.setViewportView(txtPVKNumberD);
 
-        jPanel9.add(jScrollPane4, java.awt.BorderLayout.CENTER);
+        jPanel9.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(jPanel9);
 
@@ -85,8 +108,11 @@ public class PnlDecryption extends javax.swing.JPanel {
         jLabel2.setText("Số n:");
         jPanel13.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        jTextPane3.setPreferredSize(new java.awt.Dimension(62, 60));
-        jScrollPane3.setViewportView(jTextPane3);
+        txtPVKNumberN.setColumns(20);
+        txtPVKNumberN.setLineWrap(true);
+        txtPVKNumberN.setRows(5);
+        txtPVKNumberN.setWrapStyleWord(true);
+        jScrollPane3.setViewportView(txtPVKNumberN);
 
         jPanel13.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
@@ -96,8 +122,13 @@ public class PnlDecryption extends javax.swing.JPanel {
 
         jPanel8.setLayout(new java.awt.CardLayout());
 
-        jButton7.setText("Chọn file");
-        jPanel8.add(jButton7, "card2");
+        btnSelectFile.setText("Chọn file");
+        btnSelectFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectFileActionPerformed(evt);
+            }
+        });
+        jPanel8.add(btnSelectFile, "card2");
 
         jPanel1.add(jPanel8, java.awt.BorderLayout.EAST);
 
@@ -118,32 +149,46 @@ public class PnlDecryption extends javax.swing.JPanel {
 
         jPanel6.setLayout(new java.awt.BorderLayout(10, 0));
 
+        txtEncrypt.setColumns(20);
+        txtEncrypt.setLineWrap(true);
+        txtEncrypt.setRows(5);
+        txtEncrypt.setWrapStyleWord(true);
+        jScrollPane5.setViewportView(txtEncrypt);
+
+        jPanel6.add(jScrollPane5, java.awt.BorderLayout.CENTER);
+
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane1.setViewportView(jTextPane1);
-
-        jPanel4.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/open.png"))); // NOI18N
-        jButton3.setText("Mở");
-        jPanel7.add(jButton3);
-
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/save.png"))); // NOI18N
-        jButton4.setText("Lưu");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnOpenEncryptText.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/open.png"))); // NOI18N
+        btnOpenEncryptText.setText("Mở");
+        btnOpenEncryptText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnOpenEncryptTextActionPerformed(evt);
             }
         });
-        jPanel7.add(jButton4);
+        jPanel7.add(btnOpenEncryptText);
 
-        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/copy.png"))); // NOI18N
-        jButton11.setText("Sao chép");
-        jPanel7.add(jButton11);
+        btnSaveEncryptText.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/save.png"))); // NOI18N
+        btnSaveEncryptText.setText("Lưu");
+        btnSaveEncryptText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveEncryptTextActionPerformed(evt);
+            }
+        });
+        jPanel7.add(btnSaveEncryptText);
+
+        btnCopyEncryptText.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/copy.png"))); // NOI18N
+        btnCopyEncryptText.setText("Sao chép");
+        btnCopyEncryptText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCopyEncryptTextActionPerformed(evt);
+            }
+        });
+        jPanel7.add(btnCopyEncryptText);
 
         jPanel4.add(jPanel7, java.awt.BorderLayout.SOUTH);
 
-        jPanel6.add(jPanel4, java.awt.BorderLayout.CENTER);
+        jPanel6.add(jPanel4, java.awt.BorderLayout.SOUTH);
 
         jPanel3.add(jPanel6, java.awt.BorderLayout.CENTER);
 
@@ -166,27 +211,43 @@ public class PnlDecryption extends javax.swing.JPanel {
 
         jPanel23.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane2.setViewportView(jTextPane2);
-
-        jPanel23.add(jScrollPane2, java.awt.BorderLayout.CENTER);
-
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/open.png"))); // NOI18N
-        jButton5.setText("Mở");
-        jPanel24.add(jButton5);
-
-        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/save.png"))); // NOI18N
-        jButton9.setText("Lưu");
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
+        btnOpenPlainText.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/open.png"))); // NOI18N
+        btnOpenPlainText.setText("Mở");
+        btnOpenPlainText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
+                btnOpenPlainTextActionPerformed(evt);
             }
         });
-        jPanel24.add(jButton9);
+        jPanel24.add(btnOpenPlainText);
 
-        jButton6.setText("Sao chép");
-        jPanel24.add(jButton6);
+        btnSavePlainText.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/save.png"))); // NOI18N
+        btnSavePlainText.setText("Lưu");
+        btnSavePlainText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSavePlainTextActionPerformed(evt);
+            }
+        });
+        jPanel24.add(btnSavePlainText);
+
+        btnCopyPlainText.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/copy.png"))); // NOI18N
+        btnCopyPlainText.setText("Sao chép");
+        btnCopyPlainText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCopyPlainTextActionPerformed(evt);
+            }
+        });
+        jPanel24.add(btnCopyPlainText);
 
         jPanel23.add(jPanel24, java.awt.BorderLayout.SOUTH);
+
+        txtPlain.setColumns(20);
+        txtPlain.setLineWrap(true);
+        txtPlain.setRows(5);
+        txtPlain.setToolTipText("");
+        txtPlain.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(txtPlain);
+
+        jPanel23.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         jPanel14.add(jPanel23, java.awt.BorderLayout.CENTER);
 
@@ -198,31 +259,184 @@ public class PnlDecryption extends javax.swing.JPanel {
 
         add(jPanel2, java.awt.BorderLayout.CENTER);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow.png"))); // NOI18N
-        jButton1.setText("GIẢI MÃ");
-        jButton1.setPreferredSize(new java.awt.Dimension(78, 40));
-        add(jButton1, java.awt.BorderLayout.SOUTH);
+        btnDecrypt.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnDecrypt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arrow.png"))); // NOI18N
+        btnDecrypt.setText("GIẢI MÃ");
+        btnDecrypt.setPreferredSize(new java.awt.Dimension(78, 40));
+        btnDecrypt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDecryptActionPerformed(evt);
+            }
+        });
+        add(btnDecrypt, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void btnSelectFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectFileActionPerformed
+        //        Tạo trình chọn file
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Properties file", "properties");
+        jFileChooser.setFileFilter(fileNameExtensionFilter);
+        int result = jFileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = jFileChooser.getSelectedFile();
+//            Đọc properties
+            Properties prop = new Properties();
+            try (InputStream inputStream = new FileInputStream(file);) {
+                prop.load(inputStream);
+                txtPVKNumberD.setText(prop.getProperty("d"));
+                txtPVKNumberN.setText(prop.getProperty("n"));
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnSelectFileActionPerformed
 
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton9ActionPerformed
+    private void btnOpenEncryptTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenEncryptTextActionPerformed
+        //        Tạo trình chọn file
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Txt file", "txt");
+        jFileChooser.setFileFilter(fileNameExtensionFilter);
+        int result = jFileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = jFileChooser.getSelectedFile();
+            switch (FilenameUtils.getExtension(file.getPath())) {
+                case "txt":
+                    try (FileInputStream in = new FileInputStream(file);) {
+                        byte[] bytes = in.readAllBytes();
+                        String txt = new String(bytes);
+                        txtEncrypt.setText(txt);
+                    } catch (FileNotFoundException ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    break;
+            }
+        }
+    }//GEN-LAST:event_btnOpenEncryptTextActionPerformed
 
+    private void btnSaveEncryptTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveEncryptTextActionPerformed
+//        Tạo trình chọn file
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Txt file", "txt");
+        jFileChooser.setFileFilter(fileNameExtensionFilter);
+        int result = jFileChooser.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String path = jFileChooser.getSelectedFile().getPath();
+            if (!path.endsWith(".txt")) {
+                path += ".txt";
+            }
+            try (FileOutputStream out = new FileOutputStream(path);) {
+                byte[] bytes = txtEncrypt.getText().getBytes();
+                out.write(bytes);
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnSaveEncryptTextActionPerformed
+
+    private void btnCopyEncryptTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyEncryptTextActionPerformed
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();;
+        StringSelection selection = new StringSelection(txtEncrypt.getText());
+        clipboard.setContents(selection, null);
+    }//GEN-LAST:event_btnCopyEncryptTextActionPerformed
+
+    private void btnOpenPlainTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenPlainTextActionPerformed
+        //        Tạo trình chọn file
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Txt file", "txt");
+        jFileChooser.setFileFilter(fileNameExtensionFilter);
+        int result = jFileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = jFileChooser.getSelectedFile();
+            switch (FilenameUtils.getExtension(file.getPath())) {
+                case "txt":
+                    try (FileInputStream in = new FileInputStream(file);) {
+                        byte[] bytes = in.readAllBytes();
+                        String txt = new String(bytes);
+                        txtPlain.setText(txt);
+                    } catch (FileNotFoundException ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    break;
+            }
+        }
+    }//GEN-LAST:event_btnOpenPlainTextActionPerformed
+
+    private void btnSavePlainTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePlainTextActionPerformed
+//        Tạo trình chọn file
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Txt file", "txt");
+        jFileChooser.setFileFilter(fileNameExtensionFilter);
+        int result = jFileChooser.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String path = jFileChooser.getSelectedFile().getPath();
+            if (!path.endsWith(".txt")) {
+                path += ".txt";
+            }
+            try (FileOutputStream out = new FileOutputStream(path);) {
+                byte[] bytes = txtPlain.getText().getBytes();
+                out.write(bytes);
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnSavePlainTextActionPerformed
+
+    private void btnCopyPlainTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyPlainTextActionPerformed
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();;
+        StringSelection selection = new StringSelection(txtPlain.getText());
+        clipboard.setContents(selection, null);
+    }//GEN-LAST:event_btnCopyPlainTextActionPerformed
+
+    private void btnDecryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecryptActionPerformed
+        if (Validate.decrypt(this, frmMain)) {
+            Key privateKey = new Key(new BigInteger(txtPVKNumberD.getText()), new BigInteger(txtPVKNumberN.getText()));
+            try {
+                txtPlain.setText(RSA.getDecrypt(txtEncrypt.getText(), privateKey));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnDecryptActionPerformed
+
+//    Getters and setters
+    public JTextArea getTxtPVKNumberD() {
+        return txtPVKNumberD;
+    }
+
+    public void setTxtPVKNumberD(JTextArea txtPVKNumberD) {
+        this.txtPVKNumberD = txtPVKNumberD;
+    }
+
+    public JTextArea getTxtPVKNumberN() {
+        return txtPVKNumberN;
+    }
+
+    public void setTxtPVKNumberN(JTextArea txtPVKNumberN) {
+        this.txtPVKNumberN = txtPVKNumberN;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton9;
+    private javax.swing.JButton btnCopyEncryptText;
+    private javax.swing.JButton btnCopyPlainText;
+    private javax.swing.JButton btnDecrypt;
+    private javax.swing.JButton btnOpenEncryptText;
+    private javax.swing.JButton btnOpenPlainText;
+    private javax.swing.JButton btnSaveEncryptText;
+    private javax.swing.JButton btnSavePlainText;
+    private javax.swing.JButton btnSelectFile;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -246,10 +460,10 @@ public class PnlDecryption extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextPane jTextPane1;
-    private javax.swing.JTextPane jTextPane2;
-    private javax.swing.JTextPane jTextPane3;
-    private javax.swing.JTextPane jTextPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTextArea txtEncrypt;
+    private javax.swing.JTextArea txtPVKNumberD;
+    private javax.swing.JTextArea txtPVKNumberN;
+    private javax.swing.JTextArea txtPlain;
     // End of variables declaration//GEN-END:variables
 }

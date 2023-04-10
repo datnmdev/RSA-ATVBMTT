@@ -4,16 +4,36 @@
  */
 package com.ptithcm.demo_rsa;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigInteger;
+import java.util.Properties;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.commons.io.FilenameUtils;
+import org.mindrot.jbcrypt.BCrypt;
+
 /**
  *
  * @author MINHDAT
  */
 public class PnlSignature extends javax.swing.JPanel {
+    private FrmMain frmMain;
 
     /**
      * Creates new form PnlCreateKeys
      */
-    public PnlSignature() {
+    public PnlSignature(FrmMain frmMain) {
+        this.frmMain = frmMain;
         initComponents();
     }
 
@@ -30,14 +50,14 @@ public class PnlSignature extends javax.swing.JPanel {
         jPanel5 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTextPane4 = new javax.swing.JTextPane();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        txtPVKNumberD = new javax.swing.JTextArea();
         jPanel13 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextPane3 = new javax.swing.JTextPane();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        txtPVKNumberN = new javax.swing.JTextArea();
         jPanel8 = new javax.swing.JPanel();
-        jButton7 = new javax.swing.JButton();
+        btnSelectFile = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
@@ -45,35 +65,33 @@ public class PnlSignature extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
         jPanel7 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
+        btnOpenPlainText = new javax.swing.JButton();
+        btnSavePlainText = new javax.swing.JButton();
+        btnCopyPlainText = new javax.swing.JButton();
+        scrll = new javax.swing.JScrollPane();
+        txtPlainText = new javax.swing.JTextArea();
         jPanel11 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
-        jPanel14 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextPane2 = new javax.swing.JTextPane();
         jPanel16 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
+        btnOpenHashCode = new javax.swing.JButton();
+        btnSaveHashCode = new javax.swing.JButton();
+        btnCopyHashCode = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtHashText = new javax.swing.JTextArea();
         jPanel17 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jPanel18 = new javax.swing.JPanel();
-        jPanel19 = new javax.swing.JPanel();
         jPanel20 = new javax.swing.JPanel();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        jTextPane5 = new javax.swing.JTextPane();
         jPanel21 = new javax.swing.JPanel();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton13 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnOpenSignedText = new javax.swing.JButton();
+        btnSaveSignedText = new javax.swing.JButton();
+        btnCopySignedText = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtSignedText = new javax.swing.JTextArea();
+        btnSign = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout(0, 10));
 
@@ -86,9 +104,13 @@ public class PnlSignature extends javax.swing.JPanel {
         jLabel1.setText("Số d:");
         jPanel9.add(jLabel1, java.awt.BorderLayout.WEST);
 
-        jScrollPane4.setViewportView(jTextPane4);
+        txtPVKNumberD.setColumns(20);
+        txtPVKNumberD.setLineWrap(true);
+        txtPVKNumberD.setRows(5);
+        txtPVKNumberD.setWrapStyleWord(true);
+        jScrollPane7.setViewportView(txtPVKNumberD);
 
-        jPanel9.add(jScrollPane4, java.awt.BorderLayout.CENTER);
+        jPanel9.add(jScrollPane7, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(jPanel9);
 
@@ -97,10 +119,13 @@ public class PnlSignature extends javax.swing.JPanel {
         jLabel2.setText("Số n:");
         jPanel13.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        jTextPane3.setPreferredSize(new java.awt.Dimension(62, 60));
-        jScrollPane3.setViewportView(jTextPane3);
+        txtPVKNumberN.setColumns(20);
+        txtPVKNumberN.setLineWrap(true);
+        txtPVKNumberN.setRows(5);
+        txtPVKNumberN.setWrapStyleWord(true);
+        jScrollPane8.setViewportView(txtPVKNumberN);
 
-        jPanel13.add(jScrollPane3, java.awt.BorderLayout.CENTER);
+        jPanel13.add(jScrollPane8, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(jPanel13);
 
@@ -108,8 +133,13 @@ public class PnlSignature extends javax.swing.JPanel {
 
         jPanel8.setLayout(new java.awt.CardLayout());
 
-        jButton7.setText("Chọn file");
-        jPanel8.add(jButton7, "card2");
+        btnSelectFile.setText("Chọn file");
+        btnSelectFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectFileActionPerformed(evt);
+            }
+        });
+        jPanel8.add(btnSelectFile, "card2");
 
         jPanel1.add(jPanel8, java.awt.BorderLayout.EAST);
 
@@ -133,30 +163,44 @@ public class PnlSignature extends javax.swing.JPanel {
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane1.setViewportView(jTextPane1);
+        jPanel7.setLayout(new java.awt.GridLayout(10, 1, 0, 2));
 
-        jPanel4.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        jPanel7.setLayout(new java.awt.GridLayout(10, 1));
-
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/open.png"))); // NOI18N
-        jButton3.setText("Mở");
-        jPanel7.add(jButton3);
-
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/save.png"))); // NOI18N
-        jButton4.setText("Lưu");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnOpenPlainText.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/open.png"))); // NOI18N
+        btnOpenPlainText.setText("Mở");
+        btnOpenPlainText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnOpenPlainTextActionPerformed(evt);
             }
         });
-        jPanel7.add(jButton4);
+        jPanel7.add(btnOpenPlainText);
 
-        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/copy.png"))); // NOI18N
-        jButton11.setText("Sao chép");
-        jPanel7.add(jButton11);
+        btnSavePlainText.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/save.png"))); // NOI18N
+        btnSavePlainText.setText("Lưu");
+        btnSavePlainText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSavePlainTextActionPerformed(evt);
+            }
+        });
+        jPanel7.add(btnSavePlainText);
+
+        btnCopyPlainText.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/copy.png"))); // NOI18N
+        btnCopyPlainText.setText("Sao chép");
+        btnCopyPlainText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCopyPlainTextActionPerformed(evt);
+            }
+        });
+        jPanel7.add(btnCopyPlainText);
 
         jPanel4.add(jPanel7, java.awt.BorderLayout.EAST);
+
+        txtPlainText.setColumns(20);
+        txtPlainText.setLineWrap(true);
+        txtPlainText.setRows(5);
+        txtPlainText.setWrapStyleWord(true);
+        scrll.setViewportView(txtPlainText);
+
+        jPanel4.add(scrll, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.CENTER);
 
@@ -175,35 +219,46 @@ public class PnlSignature extends javax.swing.JPanel {
 
         jPanel12.setLayout(new java.awt.BorderLayout(0, 10));
 
-        jPanel14.setLayout(new java.awt.BorderLayout(10, 0));
-        jPanel12.add(jPanel14, java.awt.BorderLayout.CENTER);
-
         jPanel15.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane2.setViewportView(jTextPane2);
+        jPanel16.setLayout(new java.awt.GridLayout(10, 1, 0, 2));
 
-        jPanel15.add(jScrollPane2, java.awt.BorderLayout.CENTER);
-
-        jPanel16.setLayout(new java.awt.GridLayout(10, 1));
-
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/open.png"))); // NOI18N
-        jButton5.setText("Mở");
-        jPanel16.add(jButton5);
-
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/save.png"))); // NOI18N
-        jButton6.setText("Lưu");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        btnOpenHashCode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/open.png"))); // NOI18N
+        btnOpenHashCode.setText("Mở");
+        btnOpenHashCode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                btnOpenHashCodeActionPerformed(evt);
             }
         });
-        jPanel16.add(jButton6);
+        jPanel16.add(btnOpenHashCode);
 
-        jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/copy.png"))); // NOI18N
-        jButton12.setText("Sao chép");
-        jPanel16.add(jButton12);
+        btnSaveHashCode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/save.png"))); // NOI18N
+        btnSaveHashCode.setText("Lưu");
+        btnSaveHashCode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveHashCodeActionPerformed(evt);
+            }
+        });
+        jPanel16.add(btnSaveHashCode);
+
+        btnCopyHashCode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/copy.png"))); // NOI18N
+        btnCopyHashCode.setText("Sao chép");
+        btnCopyHashCode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCopyHashCodeActionPerformed(evt);
+            }
+        });
+        jPanel16.add(btnCopyHashCode);
 
         jPanel15.add(jPanel16, java.awt.BorderLayout.EAST);
+
+        txtHashText.setColumns(20);
+        txtHashText.setLineWrap(true);
+        txtHashText.setRows(5);
+        txtHashText.setWrapStyleWord(true);
+        jScrollPane1.setViewportView(txtHashText);
+
+        jPanel15.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         jPanel12.add(jPanel15, java.awt.BorderLayout.CENTER);
 
@@ -222,35 +277,46 @@ public class PnlSignature extends javax.swing.JPanel {
 
         jPanel18.setLayout(new java.awt.BorderLayout(0, 10));
 
-        jPanel19.setLayout(new java.awt.BorderLayout(10, 0));
-        jPanel18.add(jPanel19, java.awt.BorderLayout.CENTER);
-
         jPanel20.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane6.setViewportView(jTextPane5);
+        jPanel21.setLayout(new java.awt.GridLayout(10, 1, 0, 2));
 
-        jPanel20.add(jScrollPane6, java.awt.BorderLayout.CENTER);
-
-        jPanel21.setLayout(new java.awt.GridLayout(10, 1));
-
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/open.png"))); // NOI18N
-        jButton8.setText("Mở");
-        jPanel21.add(jButton8);
-
-        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/save.png"))); // NOI18N
-        jButton9.setText("Lưu");
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
+        btnOpenSignedText.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/open.png"))); // NOI18N
+        btnOpenSignedText.setText("Mở");
+        btnOpenSignedText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
+                btnOpenSignedTextActionPerformed(evt);
             }
         });
-        jPanel21.add(jButton9);
+        jPanel21.add(btnOpenSignedText);
 
-        jButton13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/copy.png"))); // NOI18N
-        jButton13.setText("Sao chép");
-        jPanel21.add(jButton13);
+        btnSaveSignedText.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/save.png"))); // NOI18N
+        btnSaveSignedText.setText("Lưu");
+        btnSaveSignedText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveSignedTextActionPerformed(evt);
+            }
+        });
+        jPanel21.add(btnSaveSignedText);
+
+        btnCopySignedText.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/copy.png"))); // NOI18N
+        btnCopySignedText.setText("Sao chép");
+        btnCopySignedText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCopySignedTextActionPerformed(evt);
+            }
+        });
+        jPanel21.add(btnCopySignedText);
 
         jPanel20.add(jPanel21, java.awt.BorderLayout.EAST);
+
+        txtSignedText.setColumns(20);
+        txtSignedText.setLineWrap(true);
+        txtSignedText.setRows(5);
+        txtSignedText.setWrapStyleWord(true);
+        jScrollPane2.setViewportView(txtSignedText);
+
+        jPanel20.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         jPanel18.add(jPanel20, java.awt.BorderLayout.CENTER);
 
@@ -262,38 +328,251 @@ public class PnlSignature extends javax.swing.JPanel {
 
         add(jScrollPane5, java.awt.BorderLayout.CENTER);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/PEN.png"))); // NOI18N
-        jButton1.setText("KÝ");
-        jButton1.setPreferredSize(new java.awt.Dimension(78, 40));
-        add(jButton1, java.awt.BorderLayout.SOUTH);
+        btnSign.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSign.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/PEN.png"))); // NOI18N
+        btnSign.setText("KÝ");
+        btnSign.setPreferredSize(new java.awt.Dimension(78, 40));
+        btnSign.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSignActionPerformed(evt);
+            }
+        });
+        add(btnSign, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void btnSelectFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectFileActionPerformed
+//        Tạo trình chọn file
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Properties file", "properties");
+        jFileChooser.setFileFilter(fileNameExtensionFilter);
+        int result = jFileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = jFileChooser.getSelectedFile();
+//            Đọc properties
+            Properties prop = new Properties();
+            try (InputStream inputStream = new FileInputStream(file);) {
+                prop.load(inputStream);
+                txtPVKNumberD.setText(prop.getProperty("d"));
+                txtPVKNumberN.setText(prop.getProperty("n"));
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnSelectFileActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+    private void btnOpenHashCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenHashCodeActionPerformed
+//        Tạo trình chọn file
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Txt file", "txt");
+        jFileChooser.setFileFilter(fileNameExtensionFilter);
+        int result = jFileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = jFileChooser.getSelectedFile();
+            switch (FilenameUtils.getExtension(file.getPath())) {
+                case "txt":
+                    try (FileInputStream in = new FileInputStream(file);) {
+                        byte[] bytes = in.readAllBytes();
+                        String txt = new String(bytes);
+                        txtHashText.setText(txt);
+                    } catch (FileNotFoundException ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    break;
+            }
+        }
+    }//GEN-LAST:event_btnOpenHashCodeActionPerformed
 
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton9ActionPerformed
+    private void btnSaveHashCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveHashCodeActionPerformed
+//        Tạo trình chọn file
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Txt file", "txt");
+        jFileChooser.setFileFilter(fileNameExtensionFilter);
+        int result = jFileChooser.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String path = jFileChooser.getSelectedFile().getPath();
+            if (!path.endsWith(".txt")) {
+                path += ".txt";
+            }
+            try (FileOutputStream out = new FileOutputStream(path);) {
+                byte[] bytes = txtHashText.getText().getBytes();
+                out.write(bytes);
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnSaveHashCodeActionPerformed
 
+    private void btnCopyHashCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyHashCodeActionPerformed
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();;
+        StringSelection selection = new StringSelection(txtHashText.getText());
+        clipboard.setContents(selection, null);
+    }//GEN-LAST:event_btnCopyHashCodeActionPerformed
+
+    private void btnOpenSignedTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenSignedTextActionPerformed
+//        Tạo trình chọn file
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Txt file", "txt");
+        jFileChooser.setFileFilter(fileNameExtensionFilter);
+        int result = jFileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = jFileChooser.getSelectedFile();
+            switch (FilenameUtils.getExtension(file.getPath())) {
+                case "txt":
+                    try (FileInputStream in = new FileInputStream(file);) {
+                        byte[] bytes = in.readAllBytes();
+                        String txt = new String(bytes);
+                        txtSignedText.setText(txt);
+                    } catch (FileNotFoundException ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    break;
+            }
+        }
+    }//GEN-LAST:event_btnOpenSignedTextActionPerformed
+
+    private void btnSaveSignedTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveSignedTextActionPerformed
+//        Tạo trình chọn file
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Txt file", "txt");
+        jFileChooser.setFileFilter(fileNameExtensionFilter);
+        int result = jFileChooser.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String path = jFileChooser.getSelectedFile().getPath();
+            if (!path.endsWith(".txt")) {
+                path += ".txt";
+            }
+            try (FileOutputStream out = new FileOutputStream(path);) {
+                byte[] bytes = txtSignedText.getText().getBytes();
+                out.write(bytes);
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnSaveSignedTextActionPerformed
+
+    private void btnCopySignedTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopySignedTextActionPerformed
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();;
+        StringSelection selection = new StringSelection(txtSignedText.getText());
+        clipboard.setContents(selection, null);
+    }//GEN-LAST:event_btnCopySignedTextActionPerformed
+
+    private void btnSignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignActionPerformed
+        if (Validate.signature(this, frmMain)) {
+            try {
+                String salt = BCrypt.gensalt();
+                txtHashText.setText(BCrypt.hashpw(txtPlainText.getText(), salt));
+                Key key = new Key(new BigInteger(txtPVKNumberD.getText()), new BigInteger(txtPVKNumberN.getText()));
+                txtSignedText.setText(RSA.getEncrypt(txtHashText.getText(), key));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(frmMain, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnSignActionPerformed
+
+    private void btnCopyPlainTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyPlainTextActionPerformed
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();;
+        StringSelection selection = new StringSelection(txtPlainText.getText());
+        clipboard.setContents(selection, null);
+    }//GEN-LAST:event_btnCopyPlainTextActionPerformed
+
+    private void btnSavePlainTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavePlainTextActionPerformed
+        //        Tạo trình chọn file
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Txt file", "txt");
+        jFileChooser.setFileFilter(fileNameExtensionFilter);
+        int result = jFileChooser.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String path = jFileChooser.getSelectedFile().getPath();
+            if (!path.endsWith(".txt")) {
+                path += ".txt";
+            }
+            try (FileOutputStream out = new FileOutputStream(path);) {
+                byte[] bytes = txtPlainText.getText().getBytes();
+                out.write(bytes);
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnSavePlainTextActionPerformed
+
+    private void btnOpenPlainTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenPlainTextActionPerformed
+        //        Tạo trình chọn file
+        JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileNameExtensionFilter fileNameExtensionFilter = new FileNameExtensionFilter("Txt file", "txt");
+        jFileChooser.setFileFilter(fileNameExtensionFilter);
+        int result = jFileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File file = jFileChooser.getSelectedFile();
+            switch (FilenameUtils.getExtension(file.getPath())) {
+                case "txt":
+                try (FileInputStream in = new FileInputStream(file);) {
+                    byte[] bytes = in.readAllBytes();
+                    String txt = new String(bytes);
+                    txtPlainText.setText(txt);
+                } catch (FileNotFoundException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                break;
+            }
+        }
+    }//GEN-LAST:event_btnOpenPlainTextActionPerformed
+
+//    Getters and setters
+    public JTextArea getTxtPVKNumberD() {
+        return txtPVKNumberD;
+    }
+
+    public void setTxtPVKNumberD(JTextArea txtPVKNumberD) {
+        this.txtPVKNumberD = txtPVKNumberD;
+    }
+
+    public JTextArea getTxtPVKNumberN() {
+        return txtPVKNumberN;
+    }
+
+    public void setTxtPVKNumberN(JTextArea txtPVKNumberN) {
+        this.txtPVKNumberN = txtPVKNumberN;
+    }
+
+    public JTextArea getTxtPlainText() {
+        return txtPlainText;
+    }
+
+    public void setTxtPlainText(JTextArea txtPlainText) {
+        this.txtPlainText = txtPlainText;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
+    private javax.swing.JButton btnCopyHashCode;
+    private javax.swing.JButton btnCopyPlainText;
+    private javax.swing.JButton btnCopySignedText;
+    private javax.swing.JButton btnOpenHashCode;
+    private javax.swing.JButton btnOpenPlainText;
+    private javax.swing.JButton btnOpenSignedText;
+    private javax.swing.JButton btnSaveHashCode;
+    private javax.swing.JButton btnSavePlainText;
+    private javax.swing.JButton btnSaveSignedText;
+    private javax.swing.JButton btnSelectFile;
+    private javax.swing.JButton btnSign;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -304,12 +583,10 @@ public class PnlSignature extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
-    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
@@ -322,14 +599,14 @@ public class PnlSignature extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JTextPane jTextPane1;
-    private javax.swing.JTextPane jTextPane2;
-    private javax.swing.JTextPane jTextPane3;
-    private javax.swing.JTextPane jTextPane4;
-    private javax.swing.JTextPane jTextPane5;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane scrll;
+    private javax.swing.JTextArea txtHashText;
+    private javax.swing.JTextArea txtPVKNumberD;
+    private javax.swing.JTextArea txtPVKNumberN;
+    private javax.swing.JTextArea txtPlainText;
+    private javax.swing.JTextArea txtSignedText;
     // End of variables declaration//GEN-END:variables
 }
