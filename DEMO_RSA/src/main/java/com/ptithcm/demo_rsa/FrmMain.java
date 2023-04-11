@@ -45,14 +45,15 @@ public class FrmMain extends javax.swing.JFrame {
 
         pnlContainer = new javax.swing.JPanel();
 
-        pnlContainer.setPreferredSize(new java.awt.Dimension(800, 600));
-        pnlContainer.setLayout(new java.awt.BorderLayout());
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hệ mật mã nâng cao RSA");
         setIconImage(new ImageIcon(getClass().getResource("/img/logoRSA.png").getPath()).getImage()
         );
         getContentPane().setLayout(new java.awt.CardLayout());
+
+        pnlContainer.setPreferredSize(new java.awt.Dimension(800, 600));
+        pnlContainer.setLayout(new java.awt.BorderLayout());
+        getContentPane().add(pnlContainer, "card2");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

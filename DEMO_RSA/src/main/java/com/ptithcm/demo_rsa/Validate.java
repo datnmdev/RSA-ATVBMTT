@@ -16,11 +16,11 @@ public class Validate {
     public static boolean createKeysCustom(JDialogCreateKeysCustom jDialogCreateKeysCustom, FrmMain frmMain) {
         
         String error = null;
-        if (StringUtils.isNumeric(jDialogCreateKeysCustom.getTxtPrimeNumberP().getText())) {
+        if (!StringUtils.isNumeric(jDialogCreateKeysCustom.getTxtPrimeNumberP().getText())) {
             error = "p không hợp lệ!";
-        } else if (StringUtils.isNumeric(jDialogCreateKeysCustom.getTxtPrimeNumberQ().getText())) {
+        } else if (!StringUtils.isNumeric(jDialogCreateKeysCustom.getTxtPrimeNumberQ().getText())) {
             error = "q không hợp lệ!";
-        } else if (StringUtils.isNumeric(jDialogCreateKeysCustom.getTxtNumberE().getText())) {
+        } else if (!StringUtils.isNumeric(jDialogCreateKeysCustom.getTxtNumberE().getText())) {
             error = "e không hợp lệ!";
         } else if (jDialogCreateKeysCustom.getTxtPrimeNumberP().getText().equals("")) {
             error = "Vui lòng nhập p!";
