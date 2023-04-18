@@ -65,29 +65,12 @@ public class RSA {
     }
     
     public static String getEncrypt(String plainText, Key key) throws Exception {
-        StringBuilder plainBinary = new StringBuilder();
-        for (int i = 0; i < plainText.length(); ++i) {
-            String charCodeBinary = Integer.toBinaryString(plainText.codePointAt(i));
-            plainBinary.append(String.format("%32s", charCodeBinary).replace(' ', '0'));
-        }
-        
-//       Mã khối với mỗi khối dài 32 bit (khối có thể thay đổi tùy ý) (trong demo này định dạng 32 bit ứng với 1 kí tự)
-        int length = plainBinary.length();
-        int repeat;
-        if (length % 32 == 0) {
-            repeat = length / 32;
-        } else {
-            repeat = length / 32 + 1;
-        }
-        int index = 0;
         StringBuilder encryptText = new StringBuilder();
-        String regex = "#";
-        for (int i = 0; i < repeat; ++i) {
-            BigInteger binary = new BigInteger(plainBinary.substring(index, (index = index + 32)));
-            BigInteger M = binary.modPow(key.getX(), key.getN());
-            encryptText.append(M.toString() + regex);
+        for (int i = 0; i < plainText.length(); ++i) {
+            BigInteger unicode = new BigInteger(String.valueOf(plainText.codePointAt(i)));
+            BigInteger m = unicode.modPow(key.getX(), key.getN());
+            encryptText.append(m.toString() + "#");
         }
-        
         return String.valueOf(encryptText);
     }
 
@@ -96,13 +79,11 @@ public class RSA {
         String[] split = encyptedText.split("#");
         StringBuilder plainText = new StringBuilder();
         for (String str : split) {
-            BigInteger encryptBinary = new BigInteger(str);
-            BigInteger plainBinary = encryptBinary.modPow(key.getX(), key.getN());
-            int plainInteger = Integer.parseInt(plainBinary.toString(), 2);
-            char plainCharacter = Character.toChars(plainInteger)[0];
-            plainText.append(plainCharacter);
+            BigInteger c = new BigInteger(str);
+            BigInteger m = c.modPow(key.getX(), key.getN());
+            char unicode = Character.toChars(Integer.parseInt(m.toString()))[0];
+            plainText.append(unicode);
         }
-        
         return String.valueOf(plainText);
     }
 }
